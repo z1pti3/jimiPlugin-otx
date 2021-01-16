@@ -55,3 +55,51 @@ class _otx():
                         response = self.getAPI(responseData["next"])
             except TypeError as e:
                 return None
+
+    def getPulse(self,pulseID):
+        requestArgs = "/{0}/{1}".format("/pulses/",pulseID)
+        url = "{0}{1}".format(self.url,requestArgs)
+        response = self.getAPI(url)
+        return response  
+
+    def lookupIpv4(self,ipv4):
+        requestArgs = "/{0}/{1}".format("/indicators/IPv4",ipv4)
+        url = "{0}{1}".format(self.url,requestArgs)
+        response = self.getAPI(url)
+        return response
+
+    def lookupIpv6(self,ipv6):
+        requestArgs = "/{0}/{1}".format("/indicators/IPv6",ipv6)
+        url = "{0}{1}".format(self.url,requestArgs)
+        response = self.getAPI(url)
+        return response
+
+    def lookupDomain(self,domain):
+        requestArgs = "/{0}/{1}".format("/indicators/domain",domain)
+        url = "{0}{1}".format(self.url,requestArgs)
+        response = self.getAPI(url)
+        return response
+
+    def lookupHostname(self,hostname):
+        requestArgs = "/{0}/{1}".format("/indicators/hostname",hostname)
+        url = "{0}{1}".format(self.url,requestArgs)
+        response = self.getAPI(url)
+        return response
+
+    def lookupUrl(self,url):
+        requestArgs = "/{0}/{1}".format("/indicators/url",url)
+        url = "{0}{1}".format(self.url,requestArgs)
+        response = self.getAPI(url)
+        return response   
+
+    def lookupCve(self,cve):
+        requestArgs = "/{0}/{1}".format("/indicators/cve",cve)
+        url = "{0}{1}".format(self.url,requestArgs)
+        response = self.getAPI(url)
+        return response
+
+    def lookupFileHash(self,hash):
+        requestArgs = "/{0}/{1}".format("/indicators/file",hash)
+        url = "{0}{1}".format(self.url,requestArgs)
+        response = self.getAPI(url)
+        return response

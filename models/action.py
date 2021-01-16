@@ -4,7 +4,7 @@ import os
 import re
 from pathlib import Path
 
-from core import settings, helpers
+from core import settings, helpers, auth, db
 from core.models import action
 from plugins.otx.includes import otx
 
@@ -75,5 +75,194 @@ class _otxUpdate(action._action):
         actionResult["result"] = True
         actionResult["rc"] = 0 
         return actionResult
+
+class _otxLookupIPv4(action._action):
+    apiToken = str()
+    ip = str()
+
+    def run(self,data,persistentData,actionResult):
+        ip = helpers.evalString(self.ip,{"data" : data})
+        apiToken = auth.getPasswordFromENC(self.apiToken)
+
+        result = otx._otx(apiToken).lookupIpv4(ip)
+        if result:
+            actionResult["result"] = True
+            actionResult["rc"] = 0
+            actionResult["apiResult"] = result
+        else:
+            actionResult["result"] = False
+            actionResult["rc"] = 404
+            actionResult["msg"] = "Failed to get a valid response from OTX API"
+        return actionResult 
+
+    def setAttribute(self,attr,value,sessionData=None):
+        if attr == "apiToken" and not value.startswith("ENC "):
+            if db.fieldACLAccess(sessionData,self.acl,attr,accessType="write"):
+                self.apiToken = "ENC {0}".format(auth.getENCFromPassword(value))
+                return True
+            return False
+        return super(_otxLookupIPv4, self).setAttribute(attr,value,sessionData=sessionData)
+
+class _otxLookupIPv6(action._action):
+    apiToken = str()
+    ip = str()
+
+    def run(self,data,persistentData,actionResult):
+        ip = helpers.evalString(self.ip,{"data" : data})
+        apiToken = auth.getPasswordFromENC(self.apiToken)
+
+        result = otx._otx(apiToken).lookupIpv6(ip)
+        if result:
+            actionResult["result"] = True
+            actionResult["rc"] = 0
+            actionResult["apiResult"] = result
+        else:
+            actionResult["result"] = False
+            actionResult["rc"] = 404
+            actionResult["msg"] = "Failed to get a valid response from OTX API"
+        return actionResult 
+
+    def setAttribute(self,attr,value,sessionData=None):
+        if attr == "apiToken" and not value.startswith("ENC "):
+            if db.fieldACLAccess(sessionData,self.acl,attr,accessType="write"):
+                self.apiToken = "ENC {0}".format(auth.getENCFromPassword(value))
+                return True
+            return False
+        return super(_otxLookupIPv6, self).setAttribute(attr,value,sessionData=sessionData)
+
+class _otxLookupDomain(action._action):
+    apiToken = str()
+    domain = str()
+
+    def run(self,data,persistentData,actionResult):
+        domain = helpers.evalString(self.domain,{"data" : data})
+        apiToken = auth.getPasswordFromENC(self.apiToken)
+
+        result = otx._otx(apiToken).lookupDomain(domain)
+        if result:
+            actionResult["result"] = True
+            actionResult["rc"] = 0
+            actionResult["apiResult"] = result
+        else:
+            actionResult["result"] = False
+            actionResult["rc"] = 404
+            actionResult["msg"] = "Failed to get a valid response from OTX API"
+        return actionResult 
+
+    def setAttribute(self,attr,value,sessionData=None):
+        if attr == "apiToken" and not value.startswith("ENC "):
+            if db.fieldACLAccess(sessionData,self.acl,attr,accessType="write"):
+                self.apiToken = "ENC {0}".format(auth.getENCFromPassword(value))
+                return True
+            return False
+        return super(_otxLookupDomain, self).setAttribute(attr,value,sessionData=sessionData)
+
+class _otxLookupHostname(action._action):
+    apiToken = str()
+    hostname = str()
+
+    def run(self,data,persistentData,actionResult):
+        hostname = helpers.evalString(self.hostname,{"data" : data})
+        apiToken = auth.getPasswordFromENC(self.apiToken)
+
+        result = otx._otx(apiToken).lookupHostname(hostname)
+        if result:
+            actionResult["result"] = True
+            actionResult["rc"] = 0
+            actionResult["apiResult"] = result
+        else:
+            actionResult["result"] = False
+            actionResult["rc"] = 404
+            actionResult["msg"] = "Failed to get a valid response from OTX API"
+        return actionResult 
+
+    def setAttribute(self,attr,value,sessionData=None):
+        if attr == "apiToken" and not value.startswith("ENC "):
+            if db.fieldACLAccess(sessionData,self.acl,attr,accessType="write"):
+                self.apiToken = "ENC {0}".format(auth.getENCFromPassword(value))
+                return True
+            return False
+        return super(_otxLookupHostname, self).setAttribute(attr,value,sessionData=sessionData)
+
+class _otxLookupUrl(action._action):
+    apiToken = str()
+    url = str()
+
+    def run(self,data,persistentData,actionResult):
+        url = helpers.evalString(self.url,{"data" : data})
+        apiToken = auth.getPasswordFromENC(self.apiToken)
+
+        result = otx._otx(apiToken).lookupUrl(url)
+        if result:
+            actionResult["result"] = True
+            actionResult["rc"] = 0
+            actionResult["apiResult"] = result
+        else:
+            actionResult["result"] = False
+            actionResult["rc"] = 404
+            actionResult["msg"] = "Failed to get a valid response from OTX API"
+        return actionResult 
+
+    def setAttribute(self,attr,value,sessionData=None):
+        if attr == "apiToken" and not value.startswith("ENC "):
+            if db.fieldACLAccess(sessionData,self.acl,attr,accessType="write"):
+                self.apiToken = "ENC {0}".format(auth.getENCFromPassword(value))
+                return True
+            return False
+        return super(_otxLookupUrl, self).setAttribute(attr,value,sessionData=sessionData)
+
+class _otxLookupCve(action._action):
+    apiToken = str()
+    cve = str()
+
+    def run(self,data,persistentData,actionResult):
+        cve = helpers.evalString(self.cve,{"data" : data})
+        apiToken = auth.getPasswordFromENC(self.apiToken)
+
+        result = otx._otx(apiToken).lookupCve(cve)
+        if result:
+            actionResult["result"] = True
+            actionResult["rc"] = 0
+            actionResult["apiResult"] = result
+        else:
+            actionResult["result"] = False
+            actionResult["rc"] = 404
+            actionResult["msg"] = "Failed to get a valid response from OTX API"
+        return actionResult 
+
+    def setAttribute(self,attr,value,sessionData=None):
+        if attr == "apiToken" and not value.startswith("ENC "):
+            if db.fieldACLAccess(sessionData,self.acl,attr,accessType="write"):
+                self.apiToken = "ENC {0}".format(auth.getENCFromPassword(value))
+                return True
+            return False
+        return super(_otxLookupCve, self).setAttribute(attr,value,sessionData=sessionData)
+
+class _otxLookupFileHash(action._action):
+    apiToken = str()
+    fileHash = str()
+
+    def run(self,data,persistentData,actionResult):
+        fileHash = helpers.evalString(self.fileHash,{"data" : data})
+        apiToken = auth.getPasswordFromENC(self.apiToken)
+
+        result = otx._otx(apiToken).lookupFileHash(fileHash)
+        if result:
+            actionResult["result"] = True
+            actionResult["rc"] = 0
+            actionResult["apiResult"] = result
+        else:
+            actionResult["result"] = False
+            actionResult["rc"] = 404
+            actionResult["msg"] = "Failed to get a valid response from OTX API"
+        return actionResult 
+
+    def setAttribute(self,attr,value,sessionData=None):
+        if attr == "apiToken" and not value.startswith("ENC "):
+            if db.fieldACLAccess(sessionData,self.acl,attr,accessType="write"):
+                self.apiToken = "ENC {0}".format(auth.getENCFromPassword(value))
+                return True
+            return False
+        return super(_otxLookupFileHash, self).setAttribute(attr,value,sessionData=sessionData)
 
 otxSettings = settings.config["otx"]
